@@ -26,4 +26,4 @@ print(plot)
 
 pair = num_steps_int[steps == max(steps), ]
 print(paste("The interval contains max of taken steps is", pair[, 1], 
-                "and the value is:", round(pair[, 2], 2)))
+            "and the value is:", round(pair[, 2], 2)))
