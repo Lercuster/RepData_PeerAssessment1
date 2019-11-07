@@ -41,3 +41,14 @@ steps_mean = mean(steps_per_day$steps)
 steps_median = median(steps_per_day$steps)
 print(paste0("mean == ", round(steps_mean, 2))) 
 print(paste0("median == ", round(steps_median, 2)))
+
+
+plot = ggplot(data = steps_per_day, aes(x=steps))+
+    geom_histogram(na.rm = T, 
+                   breaks=seq(0, 22000, by = 1000), 
+                   color="Black", fill="darkgrey") + 
+    labs(title="Steps histogram plot",
+         x="Amount of steps per day", y="Days") +
+    theme_minimal()
+
+print(plot)

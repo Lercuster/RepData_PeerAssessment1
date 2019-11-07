@@ -20,7 +20,7 @@ steps_per_day = active_data[, list(steps = sum(steps, na.rm = F)), by = date]
 
 
 plot = ggplot(data = steps_per_day, aes(x=steps))+
-       geom_histogram(na.rm = T, 
+       geom_histogram(na.rm = F, 
                       breaks=seq(0, 22000, by = 1000), 
                       color="Black", fill="darkgrey") + 
        labs(title="Steps histogram plot",
