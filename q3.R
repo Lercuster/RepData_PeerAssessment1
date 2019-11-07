@@ -20,14 +20,24 @@ num_steps_int <- active_data[, list(steps = mean(steps, na.rm=T)),
 
 insert_na = function(active_data, num_steps_int){
     ff_data = active_data
-    ff_data$steps = as.numeric(ff_data$steps)
     for(i in 1:dim(ff_data)[1]){
         if(is.na(ff_data[i, 1])){
             int = as.numeric(ff_data[i, 3])
-            step = num_steps_int[interval == int, 2]
-            ff_data[i, 1] = step
+            ff_data[i, 1] = num_steps_int[interval == int, 2]
             }
     }
     ff_data
 }
 
+new_dt = insert_na(active_data = active_data, num_steps_int = num_steps_int)
+steps_per_day_raw = active_data[, list(steps = sum(steps, na.rm = F)), by = date]
+steps_mean_raw = mean(steps_per_day_raw$steps, na.rm = T)
+steps_median_raw = median(steps_per_day_raw$steps, na.rm = T)
+print(paste0("mean == ", round(steps_mean_raw, 2))) 
+print(paste0("median == ", round(steps_median_raw, 2))) 
+
+steps_per_day = new_dt[, list(steps = sum(steps)), by = date]
+steps_mean = mean(steps_per_day$steps)
+steps_median = median(steps_per_day$steps)
+print(paste0("mean == ", round(steps_mean, 2))) 
+print(paste0("median == ", round(steps_median, 2)))
