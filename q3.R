@@ -18,16 +18,16 @@ print(paste("Nmumber of NA's in steps column:", num_of_na))
 num_steps_int <- active_data[, list(steps = mean(steps, na.rm=T)), 
                              by=interval]
 
-insert_na = function(active_data, cont){
+insert_na = function(active_data, num_steps_int){
     ff_data = active_data
+    ff_data$steps = as.numeric(ff_data$steps)
     for(i in 1:dim(ff_data)[1]){
         if(is.na(ff_data[i, 1])){
-            int = ff_data[i, 3]
-            steps = num_steps_int[]
-            
-            
+            int = as.numeric(ff_data[i, 3])
+            step = num_steps_int[interval == int, 2]
+            ff_data[i, 1] = step
             }
     }
-    active_data
+    ff_data
 }
 
