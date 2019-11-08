@@ -15,3 +15,16 @@ weekday = c("Ïí", "Âò", "Ñğ", "×ò", "Ïò")
 active_data$weekday = factor((weekdays(active_data$date, T) %in% weekday), 
                              levels = c(F, T), 
                              labels = c("weekday", "weekend"))
+
+plot = ggplot(data = active_data, 
+              aes(x = interval, y = steps), 
+              facets = active_data$weekday~.) + 
+    geom_line() + 
+    labs(title="The average  number of steps taken 
+                   in certain 5-minute interval", x = "5-minute unterval", 
+         y = "Number of steps taken") + 
+    theme_light()
+
+print(plot)
+
+print(plot)
