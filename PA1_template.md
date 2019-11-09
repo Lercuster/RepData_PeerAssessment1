@@ -8,21 +8,40 @@ output:
 
 We will need ggplot2 and data.table libraries, let's go load them:
 
-```{r, results='hide'}
+
+```r
 library(data.table)
+```
+
+```
+## Warning: package 'data.table' was built under R version 3.6.1
+```
+
+```r
 library(ggplot2)
+```
+
+```
+## Warning: package 'ggplot2' was built under R version 3.6.1
 ```
 
 
 ## Loading and preprocessing the data
 
-```{r}
+
+```r
 if (!file.exists("./data/activity.csv")){
       unzip("activity.zip", exdir = "./data")
 } else {
       print("There's no need to unzip!")
 }
+```
 
+```
+## [1] "There's no need to unzip!"
+```
+
+```r
 active_data <- as.data.table(read.csv("./data/activity.csv", header = T))
 active_data$date <- as.Date(as.character(active_data$date))
 ```
@@ -36,13 +55,15 @@ because i think it's more accurate instead of counting them as zeros.
 Here i create new dataset based on active_data where i will have 2 columns, for total amount of steps taken per day and corresponding date. 
 
 
-```{r}
+
+```r
 steps_per_day = active_data[, list(steps = sum(steps, na.rm = F)), by = date]
 ```
 
-Now let's check out the histogram of total number of steps. 
+Now let's check out the histogram Of total number of steps. 
 
-```{r}
+
+```r
 plot = ggplot(data = steps_per_day, aes(x=steps))+
        geom_histogram(breaks=seq(0, 22000, by = 1000), 
                       color="Black", fill="darkgrey") + 
@@ -52,6 +73,12 @@ plot = ggplot(data = steps_per_day, aes(x=steps))+
 
 print(plot)
 ```
+
+```
+## Warning: Removed 8 rows containing non-finite values (stat_bin).
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
 
 ## What is the average daily activity pattern?
 
