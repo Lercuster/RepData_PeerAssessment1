@@ -56,7 +56,7 @@ print(plot)
 ... and calculate mean and median number of steps for this dataset.
 
 ```{r}
-steps_mean = round(mean(steps_per_day$steps, na.rm = T), 0)
+steps_mean = round(mean(steps_per_day$steps, na.rm = T), 2)
 steps_median = median(steps_per_day$steps, na.rm = T)
 ```
 
