@@ -13,18 +13,7 @@ We will need ggplot2 and data.table libraries, let's go load them:
 
 ```r
 library(data.table)
-```
-
-```
-## Warning: package 'data.table' was built under R version 3.6.1
-```
-
-```r
 library(ggplot2)
-```
-
-```
-## Warning: package 'ggplot2' was built under R version 3.6.1
 ```
 
 
@@ -136,19 +125,6 @@ To start with let's calculate the exact amount of missing values (NA) in dataset
 
 ```r
 num_of_na = as.numeric(summary(active_data$steps)[7])
-weekdays(as.Date("2019-11-11"))
-```
-
-```
-## [1] "понедельник"
-```
-
-```r
-print("攼㹦攼㹥攼㹤攼㸵攼㸴攼㸵攼㹢昼㹣攼㹤攼㸸攼㹡")
-```
-
-```
-## [1] "<ef><ee><ed><e5><e4><e5><eb><fc><ed><e8><ea>"
 ```
 
 Tt turns out that we have 2304 missing values. I want to replace them with mean values for appropriate interval withal we've already calculate that. This way of fullfilling NA's may be not very accurate but it seems at least logical and we dont need more right now.
@@ -197,7 +173,7 @@ And as a last thing to exanine in this data set let's take a look at differencie
 
 
 ```r
-weekday = c('挼㹦攼㹤', '挼㸲昼㸲', '搼㸱昼㸰', '搼㸷昼㸲', '挼㹦昼㸲')
+weekday = c('Пн', 'Вт', 'Ср', 'Чт', 'Пт')
 filled_dt$weekday = factor((weekdays(filled_dt$date, T) %in% weekday), 
                              levels = c(F, T), 
                              labels = c("weekday", "weekend"))
@@ -213,7 +189,7 @@ table(filled_dt$weekday)
 ```
 ## 
 ## weekday weekend 
-##   17568       0
+##    4608   12960
 ```
 
 
@@ -232,4 +208,4 @@ print(plot)
 
 ![](PA1_template_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
 
-fdfsue6feuzsg6frs
+Well, that's all folks. Thanks, i'd love to see your comments in the comments section below!

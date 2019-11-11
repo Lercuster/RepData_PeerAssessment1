@@ -21,8 +21,6 @@ library(ggplot2)
 ```{r}
 if (!file.exists("./data/activity.csv")){
       unzip("activity.zip", exdir = "./data")
-} else {
-      print("There's no need to unzip!")
 }
 
 active_data <- as.data.table(read.csv("./data/activity.csv", header = T))
@@ -66,7 +64,7 @@ As wee can see, the mean value is `r steps_mean` and the median is `r steps_medi
 
 ## What is the average daily activity pattern?
 
-Now let's inspect daily activity. To do that, at firts, i'm going to calculate new data set with 2 columns, first one - average number of steps taken during 5-minute interval and the second column - corresonding interval.
+Now let's inspect daily activity. To do that, at first, i'm going to calculate new data set with 2 columns, first one - average number of steps taken during 5-minute interval and the second column - corresonding interval.
 
 ```{r}
 num_steps_int <- active_data[, list(steps = mean(steps, na.rm=T)), 
@@ -102,11 +100,9 @@ To start with let's calculate the exact amount of missing values (NA) in dataset
 
 ```{r}
 num_of_na = as.numeric(summary(active_data$steps)[7])
-weekdays(as.Date("2019-11-11"))
-print("ïîíåäåëüíèê")
 ```
 
-Tt turns out that we have `r num_of_na` missing values. I want to replace them with mean values for appropriate interval withal we've already calculate that. This way of fullfilling NA's may be not very accurate but it seems at least logical and we dont need more right now.
+It turns out that we have `r num_of_na` missing values. I want to replace them with mean values for appropriate interval withal we've already calculate that. This way of fullfilling NA's may be not very accurate but it seems at least logical and we dont need more right now.
 
 To replace NA's i will use following function:
 
@@ -131,7 +127,7 @@ And now let's use it to create new filled dataset:
 filled_dt = insert_na(active_data = active_data, num_steps_int = num_steps_int)
 ```
 
-So, now we have to datasets to compare. Let's look to the mean and median of steps column in each data to see if there is any differencies and how big they are:
+So, now we have two datasets to compare. Let's look to the mean and median of steps column in each data to see if there is any differencies and how big they are:
 
 ```{r}
 steps_per_day_filled = filled_dt[, list(steps = sum(steps)), by = date]
@@ -144,11 +140,11 @@ I remind that in raw dataset wee had `r steps_mean` as a mean value and `r steps
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-And as a last thing to exanine in this data set let's take a look at differencies of nember of steps taken in week or in weekend days. To do so i will add new factor varible in the (filled) dataset, which will indicate is current day weekday or not. 
-(sorry, i'm a russian speaker, so i will name day in russian, just believe it's correct)
+And as a last thing to exanine in this data set let's take a look at differencies of nember of steps taken in week or in weekend days. To do so i will add new factor varible in the (filled) dataset, which will indicate is current day is a weekday or not. 
+(sorry, i'm a russian speaker, so i will name days in russian, just believe it's correct)
 
 ```{r}
-weekday = c('Ïí', 'Âò', 'Ñð', '×ò', 'Ïò')
+weekday = c('ÐŸÐ½', 'Ð’Ñ‚', 'Ð¡Ñ€', 'Ð§Ñ‚', 'ÐŸÑ‚')
 filled_dt$weekday = factor((weekdays(filled_dt$date, T) %in% weekday), 
                              levels = c(F, T), 
                              labels = c("weekday", "weekend"))
@@ -175,4 +171,4 @@ print(plot)
 
 ```
 
-fdfsue6feuzsg6frs
+Well, that's all folks. Thanks, i'd love to see your comments in the comments section below!
