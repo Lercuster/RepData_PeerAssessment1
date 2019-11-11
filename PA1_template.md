@@ -3,6 +3,8 @@ title: "Reproducible Research: Peer Assessment 1"
 output: 
   html_document:
     keep_md: true
+header-includes:
+   - \usepackage[russian]{babel}
 ---
 ## Loading libraries
 
@@ -11,7 +13,18 @@ We will need ggplot2 and data.table libraries, let's go load them:
 
 ```r
 library(data.table)
+```
+
+```
+## Warning: package 'data.table' was built under R version 3.6.1
+```
+
+```r
 library(ggplot2)
+```
+
+```
+## Warning: package 'ggplot2' was built under R version 3.6.1
 ```
 
 
@@ -117,6 +130,106 @@ It turns out that data have maximum of 206.17 steps in 835 interval.
 
 ## Imputing missing values
 
+As it was mentioned above we have some missing values in our dataset, so it may be useful to fill it with some data.  
+To start with let's calculate the exact amount of missing values (NA) in dataset.
 
+
+```r
+num_of_na = as.numeric(summary(active_data$steps)[7])
+weekdays(as.Date("2019-11-11"))
+```
+
+```
+## [1] "понедельник"
+```
+
+```r
+print("攼㹦攼㹥攼㹤攼㸵攼㸴攼㸵攼㹢昼㹣攼㹤攼㸸攼㹡")
+```
+
+```
+## [1] "<ef><ee><ed><e5><e4><e5><eb><fc><ed><e8><ea>"
+```
+
+Tt turns out that we have 2304 missing values. I want to replace them with mean values for appropriate interval withal we've already calculate that. This way of fullfilling NA's may be not very accurate but it seems at least logical and we dont need more right now.
+
+To replace NA's i will use following function:
+
+
+```r
+insert_na = function(active_data, num_steps_int){
+    ff_data = active_data
+    ff_data$steps = as.numeric(ff_data$steps)
+    ff_data$int = as.numeric(ff_data$interval)
+    for(i in 1:dim(ff_data)[1]){
+        if(is.na(ff_data[i, 1])){
+            int = as.numeric(ff_data[i, 3])
+            ff_data[i, 1] = num_steps_int[interval == int, 2]
+            }
+    }
+    ff_data
+}
+```
+
+And now let's use it to create new filled dataset:
+
+
+```r
+filled_dt = insert_na(active_data = active_data, num_steps_int = num_steps_int)
+```
+
+So, now we have to datasets to compare. Let's look to the mean and median of steps column in each data to see if there is any differencies and how big they are:
+
+
+```r
+steps_per_day_filled = filled_dt[, list(steps = sum(steps)), by = date]
+steps_mean_filled = round(mean(steps_per_day_filled$steps), 2)
+steps_median_filled = round(median(steps_per_day_filled$steps), 2)
+```
+
+I remind that in raw dataset wee had 1.076619\times 10^{4} as a mean value and 10765 as a median. In filled dataset mean of steps is 1.076619\times 10^{4} and median is 1.076619\times 10^{4}.  
+(i actually don't now how to fix that type of representation of these values, so if you do, *pleease!!* let me now in the comments below)
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+And as a last thing to exanine in this data set let's take a look at differencies of nember of steps taken in week or in weekend days. To do so i will add new factor varible in the (filled) dataset, which will indicate is current day weekday or not. 
+(sorry, i'm a russian speaker, so i will name day in russian, just believe it's correct)
+
+
+```r
+weekday = c('挼㹦攼㹤', '挼㸲昼㸲', '搼㸱昼㸰', '搼㸷昼㸲', '挼㹦昼㸲')
+filled_dt$weekday = factor((weekdays(filled_dt$date, T) %in% weekday), 
+                             levels = c(F, T), 
+                             labels = c("weekday", "weekend"))
+```
+
+Now when factor is added in dataset, let's plot this. It will time-series plot, where wee have 5-minute interval on x-axis and number of steps in that interval on y-axis.
+
+
+```r
+table(filled_dt$weekday)
+```
+
+```
+## 
+## weekday weekend 
+##   17568       0
+```
+
+
+```r
+plot = ggplot(data = filled_dt, 
+              aes(x = interval, y = steps)) + 
+    geom_line() + 
+    labs(title="The average  number of steps taken 
+                   in certain 5-minute interval", x = "5-minute unterval", 
+         y = "Number of steps taken") + 
+    theme_light() + 
+    facet_grid(facets = weekday~.)
+
+print(plot)
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
+
+fdfsue6feuzsg6frs
