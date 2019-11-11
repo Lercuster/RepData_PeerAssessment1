@@ -27,4 +27,3 @@ plot = ggplot(data = active_data,
 
 print(plot)
 
-print(plot)
