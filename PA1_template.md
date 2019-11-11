@@ -11,26 +11,9 @@ We will need ggplot2 and data.table libraries, let's go load them:
 
 ```r
 library(data.table)
-<<<<<<< HEAD
 library(ggplot2)
 ```
 
-=======
-```
-
-```
-## Warning: package 'data.table' was built under R version 3.6.1
-```
-
-```r
-library(ggplot2)
-```
-
-```
-## Warning: package 'ggplot2' was built under R version 3.6.1
-```
-
->>>>>>> d61fc56cef49446d45cc93a84bd69133a292804d
 
 ## Loading and preprocessing the data
 
@@ -66,11 +49,7 @@ Here i create new dataset based on active_data where i will have 2 columns, for 
 steps_per_day = active_data[, list(steps = sum(steps, na.rm = F)), by = date]
 ```
 
-<<<<<<< HEAD
 Now let's check out the histogram of total number of steps...
-=======
-Now let's check out the histogram Of total number of steps. 
->>>>>>> d61fc56cef49446d45cc93a84bd69133a292804d
 
 
 ```r
@@ -90,22 +69,51 @@ print(plot)
 
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
 
-<<<<<<< HEAD
 ... and calculate mean and median number of steps for this dataset.
 
 
 ```r
-steps_mean = round(mean(steps_per_day$steps, na.rm = T), 0)
+steps_mean = round(mean(steps_per_day$steps, na.rm = T), 2)
 steps_median = median(steps_per_day$steps, na.rm = T)
 ```
 
-As wee can see, the mean value is 1.0766\times 10^{4} and the median is 10765.
+As wee can see, the mean value is 1.076619\times 10^{4} and the median is 10765.
 
-=======
->>>>>>> d61fc56cef49446d45cc93a84bd69133a292804d
 ## What is the average daily activity pattern?
 
+Now let's inspect daily activity. To do that, at firts, i'm going to calculate new data set with 2 columns, first one - average number of steps taken during 5-minute interval and the second column - corresonding interval.
 
+
+```r
+num_steps_int <- active_data[, list(steps = mean(steps, na.rm=T)), 
+                                                by=interval]
+```
+
+Now let's visualize this data by creating time-series plot of 5-minute interval (x-axis) and number of steps (y-axis).
+
+
+```r
+plot = ggplot(data = num_steps_int, 
+              aes(x = interval, y = steps)) + 
+       geom_line() + 
+       labs(title="The average  number of steps taken 
+                   in certain 5-minute interval", x = "5-minute unterval", 
+                   y = "Number of steps taken") + 
+       theme_light()
+print(plot)
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+
+And let's find out certain interval in which wee have maximum of steps:
+
+
+```r
+pair = num_steps_int[steps == max(steps), ]
+pair$steps = round(pair$steps, 2)
+```
+
+It turns out that data have maximum of 206.17 steps in 835 interval.
 
 ## Imputing missing values
 

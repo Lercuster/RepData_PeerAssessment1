@@ -64,7 +64,34 @@ As wee can see, the mean value is `r steps_mean` and the median is `r steps_medi
 
 ## What is the average daily activity pattern?
 
+Now let's inspect daily activity. To do that, at firts, i'm going to calculate new data set with 2 columns, first one - average number of steps taken during 5-minute interval and the second column - corresonding interval.
 
+```{r}
+num_steps_int <- active_data[, list(steps = mean(steps, na.rm=T)), 
+                                                by=interval]
+```
+
+Now let's visualize this data by creating time-series plot of 5-minute interval (x-axis) and number of steps (y-axis).
+
+```{r}
+plot = ggplot(data = num_steps_int, 
+              aes(x = interval, y = steps)) + 
+       geom_line() + 
+       labs(title="The average  number of steps taken 
+                   in certain 5-minute interval", x = "5-minute unterval", 
+                   y = "Number of steps taken") + 
+       theme_light()
+print(plot)
+```
+
+And let's find out certain interval in which wee have maximum of steps:
+
+```{r}
+pair = num_steps_int[steps == max(steps), ]
+pair$steps = round(pair$steps, 2)
+```
+
+It turns out that data have maximum of `r pair[1, 2]` steps in `r pair[1, 1]` interval.
 
 ## Imputing missing values
 
