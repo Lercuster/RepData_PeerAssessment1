@@ -172,3 +172,5 @@ print(plot)
 ```
 
 Well, that's all folks. Thanks, i'd love to see your comments in the comments section below!
+
+To remove the scientific notation you can use `r format(steps_mean, scientific = F)`
